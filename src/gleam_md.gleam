@@ -1,3 +1,8 @@
+////
+//// gleam_md is a dead simple fast library for rendering markdown to html.
+//// It's only dependency is the gleam standard library
+//// 
+
 import gleam/io
 import gleam/regex.{type Match}
 import gleam/list
@@ -9,14 +14,32 @@ import gleam/dict.{type Dict}
 
 const regex_options = regex.Options(case_insensitive: True, multi_line: True)
 
+///
+/// Options that can be used with `render_with_optioins`
+/// 
 pub type Options {
+  ///
+  /// `class_names` allows tou to specify classes to be assigned to html tags
+  /// ```gleam
+  /// Options(class_names: dict.from_list([#("h1", "heading1"), #("img", "responsive image"), #("code", "block-code")]))
+  /// 
   Options(class_names: Dict(String, String))
 }
 
+///
+/// `render` the html from a given markdown string without bothering about passing options
+/// ```gleam
+/// render("### heading 3")
+/// ```
 pub fn render(markdown: String) {
   render_with_optioins(markdown, Options(class_names: dict.from_list([])))
 }
 
+///
+/// `render` the html from a given markdown string while passing options like class_names
+/// ```gleam
+/// render_with_optioins("### heading 3", Options(class_names: dict.from_list([#("h3", "awesome-heading")])))
+/// ```
 pub fn render_with_optioins(markdown: String, options: Options) {
   markdown
   |> string.trim
@@ -268,46 +291,4 @@ fn parse_paragraphs(text: String, options: Options) {
       }
     })
   })
-}
-
-pub fn main() {
-  "
-# Header 1 goes here
-sub title
-## Header 2
-
-header 1
-========
-
-header 2
---------
-
-*Italic*, _italic_ and **bold**.
-
-[Markdown Guide](https://www.markdownguide.org/)
-
-![Markdown Logo](https://markdown-here.com/img/icon256.png)
-
----
-
-> Blockquote
-
-* List item 1
-* List item 2
-  > sub quote
-
-> This is an important
-> quote
-> to match multi line
->> also a nested quote
-
-Paragraph
-
-1. Ordered list 1
-1. Ordered list 2
-    - Inner 1
-    - Inner 2
-"
-  |> render
-  |> io.println
 }

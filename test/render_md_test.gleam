@@ -282,7 +282,7 @@ pub fn general_test() {
 
 pub fn custom_classes_test() {
   text
-  |> render_md.render_with_optioins(
+  |> render_md.render_with_options(
     render_md.Options(
       class_names: dict.from_list([#("h1", "heading1"), #("h2", "heading2")]),
     ),

@@ -15,7 +15,7 @@ import gleam/dict.{type Dict}
 const regex_options = regex.Options(case_insensitive: True, multi_line: True)
 
 ///
-/// Options that can be used with `render_with_optioins`
+/// Options that can be used with `render_with_options`
 /// 
 pub type Options {
   ///
@@ -32,15 +32,15 @@ pub type Options {
 /// render("### heading 3")
 /// ```
 pub fn render(markdown: String) {
-  render_with_optioins(markdown, Options(class_names: dict.from_list([])))
+  render_with_options(markdown, Options(class_names: dict.from_list([])))
 }
 
 ///
 /// `render` the html from a given markdown string while passing options like class_names
 /// ```gleam
-/// render_with_optioins("### heading 3", Options(class_names: dict.from_list([#("h3", "awesome-heading")])))
+/// render_with_options("### heading 3", Options(class_names: dict.from_list([#("h3", "awesome-heading")])))
 /// ```
-pub fn render_with_optioins(markdown: String, options: Options) {
+pub fn render_with_options(markdown: String, options: Options) {
   markdown
   |> string.trim
   |> parse_headers(options)
@@ -232,7 +232,7 @@ fn parse_list_item(match: Match, options: Options) {
     [_, Some(_), Some(content), Some(sublist)] ->
       form_element(
         "li",
-        content <> render_with_optioins(unindent(sublist), options),
+        content <> render_with_options(unindent(sublist), options),
         options,
       )
     _ -> ""

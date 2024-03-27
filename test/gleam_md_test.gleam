@@ -156,21 +156,21 @@ pub fn list_test() {
 2. Second item
 3. Third item
 4. Fourth item",
-      "<ol class=\"\"><li class=\"\">First item</li><li class=\"\">Second item</li></ol>\n<ol class=\"\"><li class=\"\">Third item</li><li class=\"\">Fourth item</li></ol>",
+      "<ol class=\"\"><li class=\"\">First item</li><li class=\"\">Second item</li><li class=\"\">Third item</li><li class=\"\">Fourth item</li></ol>",
     ),
     #(
       "1. First item
 1. Second item
 1. Third item
 1. Fourth item",
-      "<ol class=\"\"><li class=\"\">First item</li><li class=\"\">Second item</li></ol>\n<ol class=\"\"><li class=\"\">Third item</li><li class=\"\">Fourth item</li></ol>",
+      "<ol class=\"\"><li class=\"\">First item</li><li class=\"\">Second item</li><li class=\"\">Third item</li><li class=\"\">Fourth item</li></ol>",
     ),
     #(
       "1. First item
 8. Second item
 3. Third item
 5. Fourth item",
-      "<ol class=\"\"><li class=\"\">First item</li><li class=\"\">Second item</li></ol>\n<ol class=\"\"><li class=\"\">Third item</li><li class=\"\">Fourth item</li></ol>",
+      "<ol class=\"\"><li class=\"\">First item</li><li class=\"\">Second item</li><li class=\"\">Third item</li><li class=\"\">Fourth item</li></ol>",
     ),
     #(
       "1. First item
@@ -179,28 +179,28 @@ pub fn list_test() {
     1. Indented item
     2. Indented item
 4. Fourth item",
-      "<ol class=\"\"><li class=\"\">First item</li><li class=\"\">Second item</li></ol>\n<ol class=\"\"><li class=\"\">Third item <ol class=\"\"><li class=\"\">Indented item</li><li class=\"\">Indented item</li></ol></li></ol>\n<ol class=\"\"><li class=\"\">Fourth item</li></ol>",
+      "<ol class=\"\"><li class=\"\">First item</li><li class=\"\">Second item</li><li class=\"\">Third item<ol class=\"\"><li class=\"\">Indented item</li><li class=\"\">Indented item</li></ol></li><li class=\"\">Fourth item</li></ol>",
     ),
     #(
-      "- First item
+      "- First item x
 - Second item
 - Third item
 - Fourth item",
-      "<ul class=\"\"><li class=\"\">First item</li><li class=\"\">Second item</li></ul>\n<ul class=\"\"><li class=\"\">Third item</li><li class=\"\">Fourth item</li></ul>",
+      "<ul class=\"\"><li class=\"\">First item x</li><li class=\"\">Second item</li><li class=\"\">Third item</li><li class=\"\">Fourth item</li></ul>",
     ),
     #(
       "* First item
 * Second item
 * Third item
 * Fourth item",
-      "<ul class=\"\"><li class=\"\">First item</li><li class=\"\">Second item</li></ul>\n<ul class=\"\"><li class=\"\">Third item</li><li class=\"\">Fourth item</li></ul>",
+      "<ul class=\"\"><li class=\"\">First item</li><li class=\"\">Second item</li><li class=\"\">Third item</li><li class=\"\">Fourth item</li></ul>",
     ),
     #(
       "+ First item
 + Second item
 + Third item
 + Fourth item",
-      "<ul class=\"\"><li class=\"\">First item</li><li class=\"\">Second item</li></ul>\n<ul class=\"\"><li class=\"\">Third item</li><li class=\"\">Fourth item</li></ul>",
+      "<ul class=\"\"><li class=\"\">First item</li><li class=\"\">Second item</li><li class=\"\">Third item</li><li class=\"\">Fourth item</li></ul>",
     ),
     #(
       "- First item
@@ -209,7 +209,25 @@ pub fn list_test() {
     - Indented item
     - Indented item
 - Fourth item",
-      "<ul class=\"\"><li class=\"\">First item</li><li class=\"\">Second item</li></ul>\n<ul class=\"\"><li class=\"\">Third item <ul class=\"\"><li class=\"\">Indented item</li><li class=\"\">Indented item</li></ul></li></ul>\n<ul class=\"\"><li class=\"\">Fourth item</li></ul>",
+      "<ul class=\"\"><li class=\"\">First item</li><li class=\"\">Second item</li><li class=\"\">Third item<ul class=\"\"><li class=\"\">Indented item</li><li class=\"\">Indented item</li></ul></li><li class=\"\">Fourth item</li></ul>",
+    ),
+    #(
+      "* This is the first list item.
+* Here's the second list item.
+
+    I need to add another paragraph below the second list item.
+
+* And here's the third list item.",
+      "<ul class=\"\"><li class=\"\">This is the first list item.</li><li class=\"\">Here's the second list item.<p class=\"\">I need to add another paragraph below the second list item.</p></li><li class=\"\">And here's the third list item.</li></ul>",
+    ),
+    #(
+      "* This is the first list item.
+* Here's the second list item.
+
+    > A blockquote would look great below the second list item.
+
+* And here's the third list item.",
+      "<ul class=\"\"><li class=\"\">This is the first list item.</li><li class=\"\">Here's the second list item.<blockqoute class=\"\">\n<p class=\"\">A blockquote would look great below the second list item.</p>\n</blockqoute></li><li class=\"\">And here's the third list item.</li></ul>",
     ),
   ]
   |> test_list_equal
@@ -256,7 +274,7 @@ pub fn general_test() {
   text
   |> gleam_md.render
   |> should.equal(
-    "<h1 class=\"\">Header 1 goes here</h1>\n<p class=\"\">sub title</p>\n<h2 class=\"\">Header 2</h2>\n\n<h1 class=\"\">header 1</h1>\n\n<h2 class=\"\">header 2</h2>\n\n<em class=\"\">Italic</em>, <em class=\"\">italic</em> and <strong class=\"\">bold</strong>.\n\n<a class=\"\" href=\"https://www.markdownguide.org/\">Markdown Guide</a>\n\n<img class=\"\" src=\"https://markdown-here.com/img/icon256.png\" alt=\"Markdown Logo\" />\n\n<hr class=\"\" />\n\n<blockqoute class=\"\">\n<p class=\"\">Block<p class=\"\">quote</p></p>\n</blockqoute>\n\n<ul class=\"\"><li class=\"\">List item 1</li><li class=\"\">List item 2</li></ul>\n\n<blockqoute class=\"\">\n<p class=\"\">This is an important</p>\n<p class=\"\">quote</p>\n<p class=\"\">to match multi line</p>\n<blockqoute class=\"\">\nalso a nested <p class=\"\">quote</p>\n</blockqoute>\n</blockqoute>\n\n<p class=\"\">Paragraph</p>\n\n<ol class=\"\"><li class=\"\">Ordered list 1</li><li class=\"\">Ordered list 2 <ul class=\"\"><li class=\"\">Inner 1</li><li class=\"\">Inner 2</li></ul></li></ol>",
+    "<h1 class=\"\">Header 1 goes here</h1>\n<p class=\"\">sub title</p>\n<h2 class=\"\">Header 2</h2>\n\n<h1 class=\"\">header 1</h1>\n\n<h2 class=\"\">header 2</h2>\n\n<em class=\"\">Italic</em>, <em class=\"\">italic</em> and <strong class=\"\">bold</strong>.\n\n<a class=\"\" href=\"https://www.markdownguide.org/\">Markdown Guide</a>\n\n<img class=\"\" src=\"https://markdown-here.com/img/icon256.png\" alt=\"Markdown Logo\" />\n\n<hr class=\"\" />\n\n<blockqoute class=\"\">\n<p class=\"\">Block<p class=\"\">quote</p></p>\n</blockqoute>\n<ul class=\"\"><li class=\"\">List item 1</li><li class=\"\">List item 2</li></ul>\n\n<blockqoute class=\"\">\n<p class=\"\">This is an important</p>\n<p class=\"\">quote</p>\n<p class=\"\">to match multi line</p>\n<blockqoute class=\"\">\nalso a nested <p class=\"\">quote</p>\n</blockqoute>\n</blockqoute>\n\n<p class=\"\">Paragraph</p>\n<ol class=\"\"><li class=\"\">Ordered list 1</li><li class=\"\">Ordered list 2<ul class=\"\"><li class=\"\">Inner 1</li><li class=\"\">Inner 2</li></ul></li></ol>",
   )
 }
 
@@ -268,6 +286,6 @@ pub fn custom_classes_test() {
     ),
   )
   |> should.equal(
-    "<h1 class=\"heading1\">Header 1 goes here</h1>\n<p class=\"\">sub title</p>\n<h2 class=\"heading2\">Header 2</h2>\n\n<h1 class=\"heading1\">header 1</h1>\n\n<h2 class=\"heading2\">header 2</h2>\n\n<em class=\"\">Italic</em>, <em class=\"\">italic</em> and <strong class=\"\">bold</strong>.\n\n<a class=\"\" href=\"https://www.markdownguide.org/\">Markdown Guide</a>\n\n<img class=\"\" src=\"https://markdown-here.com/img/icon256.png\" alt=\"Markdown Logo\" />\n\n<hr class=\"\" />\n\n<blockqoute class=\"\">\n<p class=\"\">Block<p class=\"\">quote</p></p>\n</blockqoute>\n\n<ul class=\"\"><li class=\"\">List item 1</li><li class=\"\">List item 2</li></ul>\n\n<blockqoute class=\"\">\n<p class=\"\">This is an important</p>\n<p class=\"\">quote</p>\n<p class=\"\">to match multi line</p>\n<blockqoute class=\"\">\nalso a nested <p class=\"\">quote</p>\n</blockqoute>\n</blockqoute>\n\n<p class=\"\">Paragraph</p>\n\n<ol class=\"\"><li class=\"\">Ordered list 1</li><li class=\"\">Ordered list 2 <ul class=\"\"><li class=\"\">Inner 1</li><li class=\"\">Inner 2</li></ul></li></ol>",
+    "<h1 class=\"heading1\">Header 1 goes here</h1>\n<p class=\"\">sub title</p>\n<h2 class=\"heading2\">Header 2</h2>\n\n<h1 class=\"heading1\">header 1</h1>\n\n<h2 class=\"heading2\">header 2</h2>\n\n<em class=\"\">Italic</em>, <em class=\"\">italic</em> and <strong class=\"\">bold</strong>.\n\n<a class=\"\" href=\"https://www.markdownguide.org/\">Markdown Guide</a>\n\n<img class=\"\" src=\"https://markdown-here.com/img/icon256.png\" alt=\"Markdown Logo\" />\n\n<hr class=\"\" />\n\n<blockqoute class=\"\">\n<p class=\"\">Block<p class=\"\">quote</p></p>\n</blockqoute>\n<ul class=\"\"><li class=\"\">List item 1</li><li class=\"\">List item 2</li></ul>\n\n<blockqoute class=\"\">\n<p class=\"\">This is an important</p>\n<p class=\"\">quote</p>\n<p class=\"\">to match multi line</p>\n<blockqoute class=\"\">\nalso a nested <p class=\"\">quote</p>\n</blockqoute>\n</blockqoute>\n\n<p class=\"\">Paragraph</p>\n<ol class=\"\"><li class=\"\">Ordered list 1</li><li class=\"\">Ordered list 2<ul class=\"\"><li class=\"\">Inner 1</li><li class=\"\">Inner 2</li></ul></li></ol>",
   )
 }

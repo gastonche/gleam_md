@@ -205,11 +205,11 @@ fn parse_block_quotes(text: String, options: Options) {
 
 fn parse_list_item(match: Match, options: Options) {
   case match.submatches {
-    [None, Some(_), Some(content), None] -> form_element("li", content, options)
-    [None, Some(_), Some(content), Some(sublist)] ->
+    [_, Some(_), Some(content), None] -> form_element("li", content, options)
+    [_, Some(_), Some(content), Some(sublist)] ->
       form_element(
         "li",
-        content <> " " <> parse_list(unindent(sublist), options),
+        content <> render_with_optioins(unindent(sublist), options),
         options,
       )
     _ -> ""
@@ -247,16 +247,14 @@ fn parse_list(text: String, options: Options) {
   form_element(tag, parse(), options)
 }
 
-// TODO: update to match sub blocks not just sub lists
 fn parse_lists(text: String, options: Options) {
   use matches <- replace_all(
     text,
     // match all lists with their list items
-    "(?:^([\\*\\-\\+]|[0-9]+\\.)\\s.+$(?:\\n((?:\\s{2,}|[\\t])*(?:[\\*\\-\\+]|[0-9]+\\.)\\s.+)*$)?)",
+    "^(\\s*(([-+*]|\\d+\\.)\\s.*)+(\n\\s{2,}.+)*)+",
   )
   use acc, match <- list.fold(matches, text)
   string.replace(acc, match.content, parse_list(match.content, options))
-  // acc
 }
 
 fn parse_paragraphs(text: String, options: Options) {
@@ -270,4 +268,46 @@ fn parse_paragraphs(text: String, options: Options) {
       }
     })
   })
+}
+
+pub fn main() {
+  "
+# Header 1 goes here
+sub title
+## Header 2
+
+header 1
+========
+
+header 2
+--------
+
+*Italic*, _italic_ and **bold**.
+
+[Markdown Guide](https://www.markdownguide.org/)
+
+![Markdown Logo](https://markdown-here.com/img/icon256.png)
+
+---
+
+> Blockquote
+
+* List item 1
+* List item 2
+  > sub quote
+
+> This is an important
+> quote
+> to match multi line
+>> also a nested quote
+
+Paragraph
+
+1. Ordered list 1
+1. Ordered list 2
+    - Inner 1
+    - Inner 2
+"
+  |> render
+  |> io.println
 }

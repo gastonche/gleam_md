@@ -6,7 +6,7 @@ version = "0.1.0"
 #
 description = "A dead simple markdown renderer for gleam"
 licences = ["Apache-2.0"]
-# repository = { type = "github", user = "username", repo = "project" }
+repository = { type = "github", user = "gastonche", repo = "gleam_md" }
 # links = [{ title = "Website", href = "https://gleam.run" }]
 #
 # For a full reference of all the available options, you can have a look at

@@ -2,6 +2,7 @@ import gleeunit
 import gleeunit/should
 import gleam_md
 import gleam/list
+import gleam/dict
 
 pub fn main() {
   gleeunit.main()
@@ -212,4 +213,61 @@ pub fn list_test() {
     ),
   ]
   |> test_list_equal
+}
+
+const text = "
+# Header 1 goes here
+sub title
+## Header 2
+
+header 1
+========
+
+header 2
+--------
+
+*Italic*, _italic_ and **bold**.
+
+[Markdown Guide](https://www.markdownguide.org/)
+
+![Markdown Logo](https://markdown-here.com/img/icon256.png)
+
+---
+
+> Blockquote
+
+* List item 1
+* List item 2
+
+> This is an important
+> quote
+> to match multi line
+>> also a nested quote
+
+Paragraph
+
+1. Ordered list 1
+1. Ordered list 2
+    - Inner 1
+    - Inner 2
+"
+
+pub fn general_test() {
+  text
+  |> gleam_md.render
+  |> should.equal(
+    "<h1 class=\"\">Header 1 goes here</h1>\n<p class=\"\">sub title</p>\n<h2 class=\"\">Header 2</h2>\n\n<h1 class=\"\">header 1</h1>\n\n<h2 class=\"\">header 2</h2>\n\n<em class=\"\">Italic</em>, <em class=\"\">italic</em> and <strong class=\"\">bold</strong>.\n\n<a class=\"\" href=\"https://www.markdownguide.org/\">Markdown Guide</a>\n\n<img class=\"\" src=\"https://markdown-here.com/img/icon256.png\" alt=\"Markdown Logo\" />\n\n<hr class=\"\" />\n\n<blockqoute class=\"\">\n<p class=\"\">Block<p class=\"\">quote</p></p>\n</blockqoute>\n\n<ul class=\"\"><li class=\"\">List item 1</li><li class=\"\">List item 2</li></ul>\n\n<blockqoute class=\"\">\n<p class=\"\">This is an important</p>\n<p class=\"\">quote</p>\n<p class=\"\">to match multi line</p>\n<blockqoute class=\"\">\nalso a nested <p class=\"\">quote</p>\n</blockqoute>\n</blockqoute>\n\n<p class=\"\">Paragraph</p>\n\n<ol class=\"\"><li class=\"\">Ordered list 1</li><li class=\"\">Ordered list 2 <ul class=\"\"><li class=\"\">Inner 1</li><li class=\"\">Inner 2</li></ul></li></ol>",
+  )
+}
+
+pub fn custom_classes_test() {
+  text
+  |> gleam_md.render_with_optioins(
+    gleam_md.Options(
+      class_names: dict.from_list([#("h1", "heading1"), #("h2", "heading2")]),
+    ),
+  )
+  |> should.equal(
+    "<h1 class=\"heading1\">Header 1 goes here</h1>\n<p class=\"\">sub title</p>\n<h2 class=\"heading2\">Header 2</h2>\n\n<h1 class=\"heading1\">header 1</h1>\n\n<h2 class=\"heading2\">header 2</h2>\n\n<em class=\"\">Italic</em>, <em class=\"\">italic</em> and <strong class=\"\">bold</strong>.\n\n<a class=\"\" href=\"https://www.markdownguide.org/\">Markdown Guide</a>\n\n<img class=\"\" src=\"https://markdown-here.com/img/icon256.png\" alt=\"Markdown Logo\" />\n\n<hr class=\"\" />\n\n<blockqoute class=\"\">\n<p class=\"\">Block<p class=\"\">quote</p></p>\n</blockqoute>\n\n<ul class=\"\"><li class=\"\">List item 1</li><li class=\"\">List item 2</li></ul>\n\n<blockqoute class=\"\">\n<p class=\"\">This is an important</p>\n<p class=\"\">quote</p>\n<p class=\"\">to match multi line</p>\n<blockqoute class=\"\">\nalso a nested <p class=\"\">quote</p>\n</blockqoute>\n</blockqoute>\n\n<p class=\"\">Paragraph</p>\n\n<ol class=\"\"><li class=\"\">Ordered list 1</li><li class=\"\">Ordered list 2 <ul class=\"\"><li class=\"\">Inner 1</li><li class=\"\">Inner 2</li></ul></li></ol>",
+  )
 }

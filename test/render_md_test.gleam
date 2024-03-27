@@ -1,6 +1,6 @@
 import gleeunit
 import gleeunit/should
-import gleam_md
+import render_md
 import gleam/list
 import gleam/dict
 
@@ -14,47 +14,47 @@ fn test_list(items: List(a), cb: fn(a) -> Nil) {
 
 fn test_list_equal(items: List(#(String, String))) {
   use item <- test_list(items)
-  gleam_md.render(item.0)
+  render_md.render(item.0)
   |> should.equal(item.1)
 }
 
 pub fn header_1_test() {
-  gleam_md.render("# header 1")
+  render_md.render("# header 1")
   |> should.equal("<h1 class=\"\">header 1</h1>")
 }
 
 pub fn alt_header_1_test() {
-  gleam_md.render("header 1\n======")
+  render_md.render("header 1\n======")
   |> should.equal("<h1 class=\"\">header 1</h1>")
 }
 
 pub fn header_2_test() {
-  gleam_md.render("## header 2")
+  render_md.render("## header 2")
   |> should.equal("<h2 class=\"\">header 2</h2>")
 }
 
 pub fn alt_header_2_test() {
-  gleam_md.render("header 2\n------")
+  render_md.render("header 2\n------")
   |> should.equal("<h2 class=\"\">header 2</h2>")
 }
 
 pub fn header_3_test() {
-  gleam_md.render("### header 3")
+  render_md.render("### header 3")
   |> should.equal("<h3 class=\"\">header 3</h3>")
 }
 
 pub fn header_4_test() {
-  gleam_md.render("#### header 4")
+  render_md.render("#### header 4")
   |> should.equal("<h4 class=\"\">header 4</h4>")
 }
 
 pub fn header_5_test() {
-  gleam_md.render("##### header 5")
+  render_md.render("##### header 5")
   |> should.equal("<h5 class=\"\">header 5</h5>")
 }
 
 pub fn header_6_test() {
-  gleam_md.render("###### header 6")
+  render_md.render("###### header 6")
   |> should.equal("<h6 class=\"\">header 6</h6>")
 }
 
@@ -85,14 +85,16 @@ pub fn em_test() {
 }
 
 pub fn links_test() {
-  gleam_md.render("[Markdown Guide](https://www.markdownguide.org/)")
+  render_md.render("[Markdown Guide](https://www.markdownguide.org/)")
   |> should.equal(
     "<a class=\"\" href=\"https://www.markdownguide.org/\">Markdown Guide</a>",
   )
 }
 
 pub fn img_test() {
-  gleam_md.render("![Markdown Logo](https://markdown-here.com/img/icon256.png)")
+  render_md.render(
+    "![Markdown Logo](https://markdown-here.com/img/icon256.png)",
+  )
   |> should.equal(
     "<img class=\"\" src=\"https://markdown-here.com/img/icon256.png\" alt=\"Markdown Logo\" />",
   )
@@ -100,7 +102,7 @@ pub fn img_test() {
 
 pub fn horizontal_rule_test() {
   use item <- test_list(["***", "****", "---", "------", "___", "_______"])
-  gleam_md.render(item)
+  render_md.render(item)
   |> should.equal("<hr class=\"\" />")
 }
 
@@ -272,7 +274,7 @@ Paragraph
 
 pub fn general_test() {
   text
-  |> gleam_md.render
+  |> render_md.render
   |> should.equal(
     "<h1 class=\"\">Header 1 goes here</h1>\n<p class=\"\">sub title</p>\n<h2 class=\"\">Header 2</h2>\n\n<h1 class=\"\">header 1</h1>\n\n<h2 class=\"\">header 2</h2>\n\n<em class=\"\">Italic</em>, <em class=\"\">italic</em> and <strong class=\"\">bold</strong>.\n\n<a class=\"\" href=\"https://www.markdownguide.org/\">Markdown Guide</a>\n\n<img class=\"\" src=\"https://markdown-here.com/img/icon256.png\" alt=\"Markdown Logo\" />\n\n<hr class=\"\" />\n\n<blockqoute class=\"\">\n<p class=\"\">Block<p class=\"\">quote</p></p>\n</blockqoute>\n<ul class=\"\"><li class=\"\">List item 1</li><li class=\"\">List item 2</li></ul>\n\n<blockqoute class=\"\">\n<p class=\"\">This is an important</p>\n<p class=\"\">quote</p>\n<p class=\"\">to match multi line</p>\n<blockqoute class=\"\">\nalso a nested <p class=\"\">quote</p>\n</blockqoute>\n</blockqoute>\n\n<p class=\"\">Paragraph</p>\n<ol class=\"\"><li class=\"\">Ordered list 1</li><li class=\"\">Ordered list 2<ul class=\"\"><li class=\"\">Inner 1</li><li class=\"\">Inner 2</li></ul></li></ol>",
   )
@@ -280,8 +282,8 @@ pub fn general_test() {
 
 pub fn custom_classes_test() {
   text
-  |> gleam_md.render_with_optioins(
-    gleam_md.Options(
+  |> render_md.render_with_optioins(
+    render_md.Options(
       class_names: dict.from_list([#("h1", "heading1"), #("h2", "heading2")]),
     ),
   )

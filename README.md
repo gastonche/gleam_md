@@ -1,13 +1,13 @@
-# gleam_md
+# render_md
 
-[![Package Version](https://img.shields.io/hexpm/v/gleam_md)](https://hex.pm/packages/gleam_md)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/gleam_md/)
+[![Package Version](https://img.shields.io/hexpm/v/render_md)](https://hex.pm/packages/render_md)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/render_md/)
 
 ```sh
-gleam add gleam_md
+gleam add render_md
 ```
 ```gleam
-import gleam_md
+import render_md
 
 pub fn main() {
   "
@@ -45,11 +45,11 @@ Paragraph
 1. Ordered list 2
     - Inner 1
     - Inner 2
-" |> gleam_md.render
+" |> render_md.render
 }
 ```
 
-Further documentation can be found at <https://hexdocs.pm/gleam_md>.
+Further documentation can be found at <https://hexdocs.pm/render_md>.
 
 ## Development
 

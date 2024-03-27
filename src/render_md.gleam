@@ -1,5 +1,5 @@
 ////
-//// gleam_md is a dead simple fast library for rendering markdown to html.
+//// render_md is a dead simple fast library for rendering markdown to html.
 //// It's only dependency is the gleam standard library
 //// 
 

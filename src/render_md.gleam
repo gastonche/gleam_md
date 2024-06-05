@@ -3,14 +3,14 @@
 //// It's only dependency is the gleam standard library
 //// 
 
-import gleam/io
-import gleam/regex.{type Match}
-import gleam/list
-import gleam/string
-import gleam/int
-import gleam/option.{None, Some}
-import gleam/result
 import gleam/dict.{type Dict}
+import gleam/int
+import gleam/io
+import gleam/list
+import gleam/option.{None, Some}
+import gleam/regex.{type Match}
+import gleam/result
+import gleam/string
 
 const regex_options = regex.Options(case_insensitive: True, multi_line: True)
 
@@ -132,7 +132,7 @@ fn form_element_with_attrs(
 fn get_first_two(
   words words: List(a),
   default default: b,
-  next next: fn(#(a, a)) -> b
+  next next: fn(#(a, a)) -> b,
 ) {
   case list.take(words, 2) {
     [a, b] -> {

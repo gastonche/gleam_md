@@ -129,15 +129,16 @@ fn form_element_with_attrs(
   <> ">"
 }
 
-fn get_at(
+fn get_first_two(
   words words: List(a),
-  at at: Int,
   default default: b,
-  next next: fn(a) -> b,
+  next next: fn(#(a, a)) -> b
 ) {
-  case list.at(words, at) {
-    Ok(first) -> next(first)
-    Error(_) -> default
+  case list.take(words, 2) {
+    [a, b] -> {
+      next(#(a, b))
+    }
+    _ -> default
   }
 }
 
@@ -184,8 +185,7 @@ fn parse_emphasis(text: String, options: Options) {
 fn parse_links(text: String, options: Options) {
   text
   |> replace("\\[(.+?)\\]\\((.+?)\\)", fn(matches) {
-    use word <- get_at(matches, 0, text)
-    use link <- get_at(matches, 1, text)
+    use #(word, link) <- get_first_two(matches, text)
     form_element_with_attrs("a", " href=\"" <> link <> "\"", word, options)
   })
 }
@@ -193,8 +193,7 @@ fn parse_links(text: String, options: Options) {
 fn parse_images(text: String, options: Options) {
   text
   |> replace("!\\[(.*?)\\]\\((.*?)\\)", fn(matches) {
-    use word <- get_at(matches, 0, text)
-    use link <- get_at(matches, 1, text)
+    use #(word, link) <- get_first_two(matches, text)
     "<img"
     <> get_classnames(options, ["img"])
     <> " src=\""

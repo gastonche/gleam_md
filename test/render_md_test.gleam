@@ -1,8 +1,8 @@
+import gleam/dict
+import gleam/list
 import gleeunit
 import gleeunit/should
 import render_md
-import gleam/list
-import gleam/dict
 
 pub fn main() {
   gleeunit.main()
